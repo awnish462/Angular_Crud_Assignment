@@ -13,8 +13,8 @@ app.use(cors());
 // MySQL connection
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root', // Change this to your MySQL username
-    password: 'Awnish@#$000', // Change this to your MySQL password
+    user: 'root',
+    password: 'Awnish@#$000', 
     database: 'synonymsdb',
 });
 

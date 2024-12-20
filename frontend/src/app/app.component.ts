@@ -13,49 +13,8 @@ interface Synonym {
     selector: 'app-root',
     standalone: true,
     imports: [FormsModule, CommonModule],
-    template: `
-        <h1>Synonyms Manager</h1>
-        <div>
-            <input [(ngModel)]="synonym.Synonym" placeholder="Synonym" />
-            <input [(ngModel)]="synonym.AltSynonyms" placeholder="Alt Synonyms" />
-            <input [(ngModel)]="synonym.TechWord" placeholder="Tech Word" />
-            <button (click)="addSynonym()">Add</button>
-            <button (click)="updateSynonym()">Update</button>
-        </div>
-        <table>
-            <tr>
-                <th>Synonym</th>
-                <th>Alt Synonyms</th>
-                <th>Tech Word</th>
-                <th>Actions</th>
-            </tr>
-            <tr *ngFor="let s of synonyms">
-                <td>{{ s.Synonym }}</td>
-                <td>{{ s.AltSynonyms }}</td>
-                <td>{{ s.TechWord }}</td>
-                <td><button (click)="deleteSynonym(s.Synonym)">Delete</button></td>
-            </tr>
-        </table>
-    `,
-    styles: [`
-      .container {
-          margin: 20px;
-      }
-      .form {
-          margin-bottom: 20px;
-      }
-      table {
-          width: 100%;
-          border-collapse: collapse;
-      }
-      th, td {
-          border: 1px solid #ddd;
-          padding: 8px;
-      }
-      th {
-          background-color: #f4f4f4;
-      }
-  `],
+    templateUrl:'./app.component.html',
+    styleUrl:'./app.component.css'
 })
 export class AppComponent {
     synonyms: Synonym[] = [];
@@ -65,6 +24,10 @@ export class AppComponent {
 
     ngOnInit() {
         this.loadSynonyms();
+    }
+
+    reload(){
+        window.location.reload();
     }
 
     loadSynonyms() {
@@ -77,13 +40,16 @@ export class AppComponent {
         this.http.post('http://localhost:3000/add', this.synonym).subscribe(() => {
             this.loadSynonyms();
             this.synonym = { Synonym: '', AltSynonyms: '', TechWord: '' };
+          
         });
+        this.reload();
     }
 
     updateSynonym() {
         this.http.put('http://localhost:3000/update', this.synonym).subscribe(() => {
             this.loadSynonyms();
         });
+        this.reload();
     }
 
     deleteSynonym(Synonym: string) {
@@ -92,5 +58,6 @@ export class AppComponent {
             .subscribe(() => {
                 this.loadSynonyms();
             });
+            this.reload();
     }
 }
